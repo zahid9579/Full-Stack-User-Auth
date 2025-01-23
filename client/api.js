@@ -1,7 +1,7 @@
 import axios from "axios";
 
 // Defining  the base URL for your API
-const BASE_URL = 'http://localhost:3000/api';
+const BASE_URL = 'https://full-stack-user-auth-inky.vercel.app/api';
 
 export const loginUser = async (formData) => {
   
@@ -18,7 +18,7 @@ export const loginUser = async (formData) => {
 
 export const registerUser = async (formData) => {
     try {
-        const response = await axios.post('http://127.0.0.1:3000/api/register', formData);
+        const response = await axios.post('https://full-stack-user-auth-inky.vercel.app/api/register', formData);
         console.log('Register Successful:', response.data);
         return response.data;  // Return the response for further use
     } catch (error) {
