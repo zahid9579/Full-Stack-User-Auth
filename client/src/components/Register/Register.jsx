@@ -26,6 +26,18 @@ const Register = () => {
     try {
       const data = await registerUser(formData);
       console.log('Registration Successful', data);
+
+      // Clear the form fields after successful registration
+      setFormData({
+        f_name: '',
+        l_name: '',
+        dob: '',
+        email: '',
+        password: '',
+        mobile_no: '',
+        gender: ''
+      });
+
     } catch (error) {
       console.log('Registration Failed', error);
     }

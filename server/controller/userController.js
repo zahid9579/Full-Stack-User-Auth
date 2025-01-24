@@ -1,6 +1,7 @@
 const express = require('express');
 const {User}  = require('../model/UserModel.js');
-
+const {jwtAuthMiddleware, generateToken} = require('./../jwt.js');
+const { config } = require('dotenv');
 
 const registerUser = (async (req, res) => {
   try {
@@ -28,8 +29,19 @@ const registerUser = (async (req, res) => {
           gender
       });
 
-      await newUser.save();
-      res.status(201).json({ message: 'User registered successfully', user: newUser });
+      const response = await newUser.save();
+
+      const payload = {
+        id: response.id,
+        f_name: response.f_name
+
+      }
+
+      const token = generateToken(payload)
+      console.log("Token is :", token);
+
+
+      res.status(201).json({ message: 'User registered successfully', response: response, token: token});
   } catch (err) {
       console.error(err);
       res.status(500).json({ error: 'Server error' });
@@ -55,7 +67,14 @@ const loginUser = async(req, res) => {
             return res.status(404).json({msg: "User not found..."})
         }
 
-        res.status(200).json({msg: "Login successully", user})
+        // Generate token
+        const payload ={
+            id: user.id,
+            f_name: user.f_name
+        }
+        const token = generateToken(payload)
+        // Return token as response
+        res.status(200).json({msg: "Login successully", token})
         
     }catch(err){
         console.log(err)
@@ -63,5 +82,20 @@ const loginUser = async(req, res) => {
     }
 }
 
+// Function to get all the user
+const getAllUser = async(req, res) => {
+    try{
+        const data = await User.find();
+        console.log("data fetched");
+        res.status(200).json(data);
 
-module.exports = {registerUser, loginUser};
+    }catch(err){
+        console.log(err)
+        res.status(404).json({error: "Internal server error"});
+    }
+  
+};
+
+
+module.exports = {registerUser, loginUser, getAllUser};
+

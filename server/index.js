@@ -4,6 +4,7 @@ const port = 3000
 const userRoutes = require('./routes/userRoutes')
 const connectDB = require('./db');
 const cors = require('cors')
+require('dotenv').config();
 
 app.use(express.json()); // Middleware to parse JSON
 

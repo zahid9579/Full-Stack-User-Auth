@@ -21,6 +21,10 @@ const Login = () => {
     try{
         const data = await loginUser(formData);
         console.log('Login Successfully', data);
+        setFormData({
+          email: '',
+          password: ''
+        });
 
 
     }catch(error){
